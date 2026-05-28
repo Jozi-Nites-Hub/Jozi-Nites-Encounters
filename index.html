@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BlackSpice • Jozi Nites Thoughts</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
     
@@ -13,167 +17,173 @@
       background: #0a0503; 
       color: #f4e4c9; 
       min-height: 100vh;
+      overflow-x: hidden;
     }
     header { 
       background: linear-gradient(#1c1208, #3c2a1f); 
-      padding: 20px; 
+      padding: 25px; 
       text-align:center; 
-      border-bottom: 3px solid #d4af37;
+      border-bottom: 4px solid #d4af37;
+      position: relative;
     }
-    .logo { width: 180px; margin: 10px 0; }
-    h1 { 
-      color: #ffd700; 
-      font-family: 'Playfair Display', serif; 
-      margin: 8px 0;
-    }
+    .logo { width: 200px; filter: drop-shadow(0 0 15px #ffd700); animation: glow 3s infinite alternate; }
+    @keyframes glow { from { filter: drop-shadow(0 0 8px #ffd700); } to { filter: drop-shadow(0 0 25px #ffd700); } }
+    
+    h1 { color: #ffd700; font-family: 'Playfair Display', serif; margin: 10px 0; text-shadow: 0 0 15px #8b4513; }
+    
     .nav { 
-      display: flex; 
-      justify-content: center; 
-      gap: 15px; 
-      padding: 15px; 
-      background: #1c1208; 
-      flex-wrap: wrap;
+      display: flex; justify-content: center; gap: 12px; padding: 18px; 
+      background: #1c1208; flex-wrap: wrap;
     }
     .nav button { 
-      padding: 12px 22px; 
-      background: #8b4513; 
-      color: #ffd700;
-      border: none; 
-      border-radius: 30px; 
-      cursor: pointer; 
-      font-weight: 600;
-      transition: all 0.3s;
+      padding: 12px 24px; background: #8b4513; color: #ffd700;
+      border: none; border-radius: 30px; cursor: pointer; font-weight: 600;
+      transition: all 0.4s ease;
     }
-    .nav button:hover { background: #d4af37; color: #1c1208; }
+    .nav button:hover, .nav button.active { 
+      background: #d4af37; color: #1c1208; transform: scale(1.08); 
+    }
 
-    .section { padding: 30px; max-width: 1000px; margin: auto; display: none; }
+    .section { padding: 35px; max-width: 1100px; margin: auto; display: none; animation: fadeIn 0.6s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .active { display: block; }
 
     .card { 
-      background: #1c1208; 
-      padding: 25px; 
-      margin: 20px 0; 
-      border-radius: 16px; 
-      border: 1px solid #d4af37; 
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      background: linear-gradient(#1c1208, #2a1f18); 
+      padding: 28px; margin: 22px 0; border-radius: 18px; 
+      border: 1px solid #d4af37; box-shadow: 0 10px 30px rgba(139,69,19,0.5);
+      transition: transform 0.3s;
     }
-    .level { 
-      display: inline-block; 
-      padding: 4px 14px; 
-      border-radius: 20px; 
-      font-size: 0.9em; 
-      margin-bottom: 10px;
-    }
-    .vanilla { background: #4a7043; color: white; }
-    .spicy { background: #c41e3a; color: white; }
-    .adventurous { background: #8b008b; color: white; }
+    .card:hover { transform: translateY(-8px); }
 
-    button { 
-      background: #8b4513; 
-      color: white; 
-      padding: 14px 24px; 
-      border: none; 
-      border-radius: 30px; 
-      cursor: pointer; 
-      font-weight: bold;
-    }
-    button:hover { background: #d4af37; color: #1c1208; }
+    .level { padding: 6px 18px; border-radius: 30px; font-size: 0.9em; margin-bottom: 12px; font-weight: bold; }
+    .vanilla { background: #4a7043; }
+    .spicy { background: #c41e3a; }
+    .adventurous { background: #8b008b; }
 
-    .photo-preview { 
-      width: 100%; 
-      max-width: 400px; 
-      border: 2px dashed #d4af37; 
-      border-radius: 12px; 
-      margin: 15px 0; 
-      padding: 10px;
-      text-align: center;
-    }
+    button.main { background: #8b4513; color: white; padding: 16px 28px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
+    button.main:hover { background: #d4af37; color: #1c1208; }
+
+    .photo-preview img { max-width: 100%; border-radius: 12px; border: 2px solid #d4af37; }
+    .voice-recorder { background: #1c1208; padding: 20px; border-radius: 12px; text-align: center; }
   </style>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Jozi Nites Thoughts" class="logo">
     <h1>BlackSpice</h1>
-    <p>Deep Black Love • Passionate Nights • For Kings & Queens Only 👑</p>
+    <p>Deep Black Love • Kinky Passion • For Kings & Queens Only 👑</p>
   </header>
 
   <div class="nav">
     <button onclick="showSection('home')">Home</button>
     <button onclick="showSection('questions')">Questions</button>
-    <button onclick="showSection('dares')">Dares</button>
-    <button onclick="showSection('match')">Private Chat</button>
+    <button onclick="showSection('dares')">Kinky Dares</button>
+    <button onclick="showSection('moments')">Private Moments</button>
     <button onclick="showSection('tracker')">Tracker</button>
   </div>
 
   <!-- Home -->
   <div id="home" class="section active">
     <div class="card">
-      <h2>Welcome Home, Black Royalty</h2>
-      <p>Connect deeper, explore desires, and keep the fire burning between you and your partner.</p>
-      <button onclick="generateCode()">Generate Couple Code</button>
+      <h2>Welcome Back, Black Royalty</h2>
+      <div id="auth-section">
+        <input type="email" id="email" placeholder="Email" style="padding:12px; width:80%; margin:8px;"><br>
+        <input type="password" id="password" placeholder="Password" style="padding:12px; width:80%; margin:8px;"><br>
+        <button class="main" onclick="signUp()">Sign Up</button>
+        <button class="main" onclick="signIn()">Sign In</button>
+        <button class="main" onclick="anonymousLogin()">Quick Play (Demo)</button>
+      </div>
+      <div id="user-info" style="display:none;">
+        <p>Welcome, <span id="user-email"></span> 👑</p>
+        <button onclick="logout()">Logout</button>
+      </div>
     </div>
   </div>
 
   <!-- Questions -->
   <div id="questions" class="section">
-    <h2>Intimate Questions</h2>
+    <h2>Kinky Questions</h2>
     <div style="margin:15px 0;">
       <button onclick="setLevel('all')">All</button>
       <button onclick="setLevel('vanilla')">Vanilla</button>
       <button onclick="setLevel('spicy')">Spicy</button>
-      <button onclick="setLevel('adventurous')">Adventurous</button>
+      <button onclick="setLevel('adventurous')">Kinky</button>
     </div>
     <div id="qlist" class="card"></div>
-    <button onclick="newQuestion()">New Question</button>
+    <button class="main" onclick="newQuestion()">New Kinky Question</button>
   </div>
 
   <!-- Dares -->
   <div id="dares" class="section">
-    <h2>Spicy Dares</h2>
+    <h2>Kinky Dares</h2>
     <div id="dlist" class="card"></div>
-    <button onclick="newDare()">New Dare</button>
+    <button class="main" onclick="newDare()">New Dare</button>
   </div>
 
-  <!-- Photo Upload -->
-  <div id="match" class="section">
+  <!-- Private Moments -->
+  <div id="moments" class="section">
     <h2>Private Moments</h2>
     <div class="card">
-      <p>Share a private photo with your partner</p>
-      <input type="file" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)" style="margin:10px 0;">
-      <div id="photoPreview" class="photo-preview">Your photo will appear here</div>
-      <textarea placeholder="Write something sexy for your Black queen/king..." style="width:100%; height:120px; margin-top:15px;"></textarea>
-      <button>Send to Partner</button>
+      <p>Upload a steamy photo</p>
+      <input type="file" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)">
+      <div id="photoPreview" class="photo-preview"></div>
+      
+      <div class="voice-recorder">
+        <p>Record a sexy voice note for your partner</p>
+        <button onclick="startRecording()">🎤 Start Recording</button>
+        <button onclick="stopRecording()">Stop</button>
+        <div id="voicePreview"></div>
+      </div>
     </div>
   </div>
 
   <!-- Tracker -->
   <div id="tracker" class="section">
-    <h2>Our Passion Tracker</h2>
+    <h2>Passion Tracker</h2>
     <div class="card">
-      <p>Log your beautiful nights together</p>
       <input type="date" id="sessionDate"><br><br>
-      <button onclick="logSession()">Log This Session</button>
+      <button class="main" onclick="logSession()">Log Tonight’s Session</button>
     </div>
   </div>
 
   <script>
-    // Rich AI-generated questions for Black couples
+    // === FIREBASE CONFIG - REPLACE WITH YOUR OWN ===
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let mediaRecorder;
+    let audioChunks = [];
+
+    // Rich Kinky Questions (Black-focused, erotic)
     let questions = [
-      {text: "What’s one way you want your Black king to worship your body tonight?", level: "spicy"},
-      {text: "Describe the most romantic date night you’ve always dreamed of with your queen.", level: "vanilla"},
-      {text: "What’s a fantasy location where you’d love to make passionate love?", level: "adventurous"},
-      {text: "How do you want to be touched and loved tonight?", level: "spicy"},
-      {text: "What’s something new you want to try in the bedroom with your partner?", level: "adventurous"},
-      {text: "What turns you on the most when your Black queen takes control?", level: "spicy"},
-      {text: "Share one thing that makes you feel deeply loved and safe.", level: "vanilla"}
+      {text: "Describe how you want your Black king to dominate you tonight.", level: "adventurous"},
+      {text: "What’s the sluttiest thing you’ve ever wanted your queen to do for you?", level: "spicy"},
+      {text: "Where on your body do you want your partner’s tongue the most right now?", level: "spicy"},
+      {text: "What fantasy involving ropes, blindfolds or toys turns you on?", level: "adventurous"},
+      {text: "How hard and deep do you want to be fucked tonight?", level: "adventurous"},
+      {text: "Tell your partner your dirtiest secret desire.", level: "spicy"},
+      {text: "What’s one thing you’ve always wanted to try but never told anyone?", level: "adventurous"}
     ];
 
     let dares = [
-      "Give your partner a slow, sensual full-body massage with warm oil",
-      "Perform a private seductive dance for your king/queen",
-      "Try a new intimate position you’ve both been curious about",
-      "Recreate your favorite steamy movie scene together",
-      "Whisper your deepest desires while intimately connected"
+      "Strip slowly while maintaining eye contact and touching yourself",
+      "Ride your partner while whispering exactly what you want",
+      "Let your king/queen use ice cubes and their tongue anywhere",
+      "Record a short video of you masturbating thinking of them",
+      "69 while trying to make the other cum first",
+      "Spank each other while describing how good it feels"
     ];
 
     let currentLevel = 'all';
@@ -183,53 +193,103 @@
       document.getElementById(sec).classList.add('active');
     }
 
-    function setLevel(level) {
-      currentLevel = level;
-      newQuestion();
+    // Auth
+    function signUp() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      auth.createUserWithEmailAndPassword(email, pass).then(() => alert("Account created! Welcome to BlackSpice 👑"));
     }
 
-    function newQuestion() {
-      let filtered = questions;
-      if (currentLevel !== 'all') {
-        filtered = questions.filter(q => q.level === currentLevel);
+    function signIn() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      auth.signInWithEmailAndPassword(email, pass).then(user => {
+        currentUser = user.user;
+        updateUI();
+      });
+    }
+
+    function anonymousLogin() {
+      auth.signInAnonymously().then(user => {
+        currentUser = user.user;
+        updateUI();
+      });
+    }
+
+    function logout() {
+      auth.signOut();
+      document.getElementById('user-info').style.display = 'none';
+      document.getElementById('auth-section').style.display = 'block';
+    }
+
+    function updateUI() {
+      if (currentUser) {
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('user-info').style.display = 'block';
+        document.getElementById('user-email').textContent = currentUser.email || "Black King/Queen";
       }
-      if (filtered.length === 0) filtered = questions;
-      
-      const random = filtered[Math.floor(Math.random() * filtered.length)];
-      const html = `
-        <div class="level ${random.level}">${random.level.toUpperCase()}</div>
-        <div class="question" style="font-size:1.25em; line-height:1.5;">${random.text}</div>
+    }
+
+    // Questions & Dares
+    function setLevel(lvl) { currentLevel = lvl; newQuestion(); }
+    function newQuestion() {
+      let filtered = currentLevel === 'all' ? questions : questions.filter(q => q.level === currentLevel);
+      const q = filtered[Math.floor(Math.random() * filtered.length)] || questions[0];
+      document.getElementById('qlist').innerHTML = `
+        <div class="level ${q.level}">${q.level.toUpperCase()}</div>
+        <p style="font-size:1.3em; line-height:1.6;">${q.text}</p>
       `;
-      document.getElementById('qlist').innerHTML = html;
     }
 
     function newDare() {
-      const random = dares[Math.floor(Math.random() * dares.length)];
-      document.getElementById('dlist').innerHTML = `<div style="font-size:1.2em;">${random}</div>`;
+      const dare = dares[Math.floor(Math.random() * dares.length)];
+      document.getElementById('dlist').innerHTML = `<p style="font-size:1.25em;">${dare}</p>`;
     }
 
-    function generateCode() {
-      const code = "JN-" + Math.random().toString(36).substr(2,8).toUpperCase();
-      alert(`Your Jozi Nites Couple Code:\n\n${code}\n\nShare this with your partner 👑`);
-    }
-
+    // Photo
     function handlePhotoUpload(e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(ev) {
-          document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%; border-radius:12px;">`;
+        reader.onload = ev => {
+          document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}">`;
         };
         reader.readAsDataURL(file);
       }
     }
 
-    function logSession() {
-      const date = document.getElementById('sessionDate').value || "tonight";
-      alert(`Beautiful session logged for ${date} 🔥\nKeep nurturing that Black love!`);
+    // Voice Notes
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          document.getElementById('voicePreview').innerHTML = `
+            <audio controls src="${audioUrl}"></audio><br>
+            <small>Sexy voice note ready for your partner 🔥</small>
+          `;
+        };
+        mediaRecorder.start();
+      });
     }
 
-    // Start the app
+    function stopRecording() {
+      if (mediaRecorder) mediaRecorder.stop();
+    }
+
+    function logSession() {
+      const date = document.getElementById('sessionDate').value || "tonight";
+      alert(`Session logged for ${date} — Keep that Black passion burning hot! 👑🔥`);
+    }
+
+    auth.onAuthStateChanged(user => {
+      currentUser = user;
+      if (user) updateUI();
+    });
+
     window.onload = () => {
       newQuestion();
       newDare();

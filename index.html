@@ -3,125 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlackSpice • For Black Kings & Queens</title>
+  <title>BlackSpice • Jozi Nites Thoughts</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; margin:0; background: #0f0a05; color: #f4e4c9; }
-    header { background: linear-gradient(#8b4513, #5c3311); padding: 20px; text-align:center; }
-    h1 { color: #ffd700; }
-    .nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #1c1208; }
-    .nav button { padding: 10px 20px; background: #d4af37; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    .section { padding: 30px; max-width: 900px; margin: auto; display: none; }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      margin:0; 
+      background: #0a0503; 
+      color: #f4e4c9; 
+      min-height: 100vh;
+    }
+    header { 
+      background: linear-gradient(#1c1208, #3c2a1f); 
+      padding: 20px; 
+      text-align:center; 
+      border-bottom: 3px solid #d4af37;
+    }
+    .logo { width: 180px; margin: 10px 0; }
+    h1 { 
+      color: #ffd700; 
+      font-family: 'Playfair Display', serif; 
+      margin: 8px 0;
+    }
+    .nav { 
+      display: flex; 
+      justify-content: center; 
+      gap: 15px; 
+      padding: 15px; 
+      background: #1c1208; 
+      flex-wrap: wrap;
+    }
+    .nav button { 
+      padding: 12px 22px; 
+      background: #8b4513; 
+      color: #ffd700;
+      border: none; 
+      border-radius: 30px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .nav button:hover { background: #d4af37; color: #1c1208; }
+
+    .section { padding: 30px; max-width: 1000px; margin: auto; display: none; }
     .active { display: block; }
-    .card { background: #1c1208; padding: 20px; margin: 15px 0; border-radius: 12px; border: 1px solid #d4af37; }
-    button { background: #8b4513; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; }
-    .question { font-size: 1.2em; margin: 20px 0; }
+
+    .card { 
+      background: #1c1208; 
+      padding: 25px; 
+      margin: 20px 0; 
+      border-radius: 16px; 
+      border: 1px solid #d4af37; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+    .level { 
+      display: inline-block; 
+      padding: 4px 14px; 
+      border-radius: 20px; 
+      font-size: 0.9em; 
+      margin-bottom: 10px;
+    }
+    .vanilla { background: #4a7043; color: white; }
+    .spicy { background: #c41e3a; color: white; }
+    .adventurous { background: #8b008b; color: white; }
+
+    button { 
+      background: #8b4513; 
+      color: white; 
+      padding: 14px 24px; 
+      border: none; 
+      border-radius: 30px; 
+      cursor: pointer; 
+      font-weight: bold;
+    }
+    button:hover { background: #d4af37; color: #1c1208; }
+
+    .photo-preview { 
+      width: 100%; 
+      max-width: 400px; 
+      border: 2px dashed #d4af37; 
+      border-radius: 12px; 
+      margin: 15px 0; 
+      padding: 10px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <header>
+    <img src="logo.png" alt="Jozi Nites Thoughts" class="logo">
     <h1>BlackSpice</h1>
-    <p>Deepening Love • Igniting Passion • For Black Couples Only</p>
+    <p>Deep Black Love • Passionate Nights • For Kings & Queens Only 👑</p>
   </header>
 
   <div class="nav">
     <button onclick="showSection('home')">Home</button>
     <button onclick="showSection('questions')">Questions</button>
     <button onclick="showSection('dares')">Dares</button>
-    <button onclick="showSection('match')">Our Match</button>
+    <button onclick="showSection('match')">Private Chat</button>
     <button onclick="showSection('tracker')">Tracker</button>
   </div>
 
   <!-- Home -->
   <div id="home" class="section active">
-    <h2>Welcome Black King & Queen 👑</h2>
-    <p>Build trust, explore desires, and spice up your connection in a safe, beautiful space made for us.</p>
     <div class="card">
-      <h3>Enter Your Couple Code</h3>
-      <input type="text" id="code" placeholder="Enter or generate code" style="padding:10px; width:80%">
-      <button onclick="generateCode()">Generate Code</button>
-      <button onclick="linkPartner()">Link Partner</button>
+      <h2>Welcome Home, Black Royalty</h2>
+      <p>Connect deeper, explore desires, and keep the fire burning between you and your partner.</p>
+      <button onclick="generateCode()">Generate Couple Code</button>
     </div>
   </div>
 
   <!-- Questions -->
   <div id="questions" class="section">
-    <h2>Sexy Questions for Black Love</h2>
-    <div id="qlist"></div>
+    <h2>Intimate Questions</h2>
+    <div style="margin:15px 0;">
+      <button onclick="setLevel('all')">All</button>
+      <button onclick="setLevel('vanilla')">Vanilla</button>
+      <button onclick="setLevel('spicy')">Spicy</button>
+      <button onclick="setLevel('adventurous')">Adventurous</button>
+    </div>
+    <div id="qlist" class="card"></div>
     <button onclick="newQuestion()">New Question</button>
   </div>
 
   <!-- Dares -->
   <div id="dares" class="section">
     <h2>Spicy Dares</h2>
-    <div id="dlist"></div>
+    <div id="dlist" class="card"></div>
     <button onclick="newDare()">New Dare</button>
   </div>
 
-  <!-- Match -->
+  <!-- Photo Upload -->
   <div id="match" class="section">
-    <h2>Your Private Match Chat</h2>
+    <h2>Private Moments</h2>
     <div class="card">
-      <p>Share what turned you on from today's questions...</p>
-      <textarea placeholder="Type message to your partner..." style="width:100%; height:100px"></textarea>
-      <button>Send Private Message</button>
+      <p>Share a private photo with your partner</p>
+      <input type="file" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)" style="margin:10px 0;">
+      <div id="photoPreview" class="photo-preview">Your photo will appear here</div>
+      <textarea placeholder="Write something sexy for your Black queen/king..." style="width:100%; height:120px; margin-top:15px;"></textarea>
+      <button>Send to Partner</button>
     </div>
   </div>
 
   <!-- Tracker -->
   <div id="tracker" class="section">
-    <h2>Intimacy Tracker</h2>
+    <h2>Our Passion Tracker</h2>
     <div class="card">
-      <p>Log your sessions, king & queen</p>
-      <input type="date" id="date"><br><br>
-      <button onclick="logSession()">Log Tonight's Session</button>
+      <p>Log your beautiful nights together</p>
+      <input type="date" id="sessionDate"><br><br>
+      <button onclick="logSession()">Log This Session</button>
     </div>
   </div>
 
   <script>
+    // Rich AI-generated questions for Black couples
     let questions = [
-      "What's one fantasy you've always wanted to try with your Black king/queen?",
-      "Where's the most exciting place you've wanted to make love?",
-      "What turns you on the most when your partner takes control?",
-      "How do you want to be worshipped tonight?"
+      {text: "What’s one way you want your Black king to worship your body tonight?", level: "spicy"},
+      {text: "Describe the most romantic date night you’ve always dreamed of with your queen.", level: "vanilla"},
+      {text: "What’s a fantasy location where you’d love to make passionate love?", level: "adventurous"},
+      {text: "How do you want to be touched and loved tonight?", level: "spicy"},
+      {text: "What’s something new you want to try in the bedroom with your partner?", level: "adventurous"},
+      {text: "What turns you on the most when your Black queen takes control?", level: "spicy"},
+      {text: "Share one thing that makes you feel deeply loved and safe.", level: "vanilla"}
     ];
 
     let dares = [
-      "Give your partner a slow, sensual massage with warm oil",
-      "Perform a private strip tease for your queen/king",
-      "Recreate your favorite steamy movie scene",
-      "Try a new position you've both been curious about"
+      "Give your partner a slow, sensual full-body massage with warm oil",
+      "Perform a private seductive dance for your king/queen",
+      "Try a new intimate position you’ve both been curious about",
+      "Recreate your favorite steamy movie scene together",
+      "Whisper your deepest desires while intimately connected"
     ];
+
+    let currentLevel = 'all';
 
     function showSection(sec) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.getElementById(sec).classList.add('active');
     }
 
+    function setLevel(level) {
+      currentLevel = level;
+      newQuestion();
+    }
+
     function newQuestion() {
-      const random = questions[Math.floor(Math.random()*questions.length)];
-      document.getElementById('qlist').innerHTML = `<div class="card question">${random}</div>`;
+      let filtered = questions;
+      if (currentLevel !== 'all') {
+        filtered = questions.filter(q => q.level === currentLevel);
+      }
+      if (filtered.length === 0) filtered = questions;
+      
+      const random = filtered[Math.floor(Math.random() * filtered.length)];
+      const html = `
+        <div class="level ${random.level}">${random.level.toUpperCase()}</div>
+        <div class="question" style="font-size:1.25em; line-height:1.5;">${random.text}</div>
+      `;
+      document.getElementById('qlist').innerHTML = html;
     }
 
     function newDare() {
-      const random = dares[Math.floor(Math.random()*dares.length)];
-      document.getElementById('dlist').innerHTML = `<div class="card">${random}</div>`;
+      const random = dares[Math.floor(Math.random() * dares.length)];
+      document.getElementById('dlist').innerHTML = `<div style="font-size:1.2em;">${random}</div>`;
     }
 
     function generateCode() {
-      const code = "BS-" + Math.random().toString(36).substr(2,6).toUpperCase();
-      alert("Your Couple Code: " + code + "\nShare this with your partner");
+      const code = "JN-" + Math.random().toString(36).substr(2,8).toUpperCase();
+      alert(`Your Jozi Nites Couple Code:\n\n${code}\n\nShare this with your partner 👑`);
     }
 
-    function linkPartner() {
-      alert("✅ Successfully linked! Now explore together.");
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%; border-radius:12px;">`;
+        };
+        reader.readAsDataURL(file);
+      }
     }
 
     function logSession() {
-      alert("Session logged beautifully. Keep the fire burning 👑");
+      const date = document.getElementById('sessionDate').value || "tonight";
+      alert(`Beautiful session logged for ${date} 🔥\nKeep nurturing that Black love!`);
     }
 
-    // Start with a question
-    window.onload = () => newQuestion();
+    // Start the app
+    window.onload = () => {
+      newQuestion();
+      newDare();
+    };
   </script>
 </body>
 </html>

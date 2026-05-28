@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackSpice • For Black Kings & Queens</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background: #0f0a05; color: #f4e4c9; }
+    header { background: linear-gradient(#8b4513, #5c3311); padding: 20px; text-align:center; }
+    h1 { color: #ffd700; }
+    .nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #1c1208; }
+    .nav button { padding: 10px 20px; background: #d4af37; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .section { padding: 30px; max-width: 900px; margin: auto; display: none; }
+    .active { display: block; }
+    .card { background: #1c1208; padding: 20px; margin: 15px 0; border-radius: 12px; border: 1px solid #d4af37; }
+    button { background: #8b4513; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; }
+    .question { font-size: 1.2em; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BlackSpice</h1>
+    <p>Deepening Love • Igniting Passion • For Black Couples Only</p>
+  </header>
+
+  <div class="nav">
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('questions')">Questions</button>
+    <button onclick="showSection('dares')">Dares</button>
+    <button onclick="showSection('match')">Our Match</button>
+    <button onclick="showSection('tracker')">Tracker</button>
+  </div>
+
+  <!-- Home -->
+  <div id="home" class="section active">
+    <h2>Welcome Black King & Queen 👑</h2>
+    <p>Build trust, explore desires, and spice up your connection in a safe, beautiful space made for us.</p>
+    <div class="card">
+      <h3>Enter Your Couple Code</h3>
+      <input type="text" id="code" placeholder="Enter or generate code" style="padding:10px; width:80%">
+      <button onclick="generateCode()">Generate Code</button>
+      <button onclick="linkPartner()">Link Partner</button>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questions" class="section">
+    <h2>Sexy Questions for Black Love</h2>
+    <div id="qlist"></div>
+    <button onclick="newQuestion()">New Question</button>
+  </div>
+
+  <!-- Dares -->
+  <div id="dares" class="section">
+    <h2>Spicy Dares</h2>
+    <div id="dlist"></div>
+    <button onclick="newDare()">New Dare</button>
+  </div>
+
+  <!-- Match -->
+  <div id="match" class="section">
+    <h2>Your Private Match Chat</h2>
+    <div class="card">
+      <p>Share what turned you on from today's questions...</p>
+      <textarea placeholder="Type message to your partner..." style="width:100%; height:100px"></textarea>
+      <button>Send Private Message</button>
+    </div>
+  </div>
+
+  <!-- Tracker -->
+  <div id="tracker" class="section">
+    <h2>Intimacy Tracker</h2>
+    <div class="card">
+      <p>Log your sessions, king & queen</p>
+      <input type="date" id="date"><br><br>
+      <button onclick="logSession()">Log Tonight's Session</button>
+    </div>
+  </div>
+
+  <script>
+    let questions = [
+      "What's one fantasy you've always wanted to try with your Black king/queen?",
+      "Where's the most exciting place you've wanted to make love?",
+      "What turns you on the most when your partner takes control?",
+      "How do you want to be worshipped tonight?"
+    ];
+
+    let dares = [
+      "Give your partner a slow, sensual massage with warm oil",
+      "Perform a private strip tease for your queen/king",
+      "Recreate your favorite steamy movie scene",
+      "Try a new position you've both been curious about"
+    ];
+
+    function showSection(sec) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(sec).classList.add('active');
+    }
+
+    function newQuestion() {
+      const random = questions[Math.floor(Math.random()*questions.length)];
+      document.getElementById('qlist').innerHTML = `<div class="card question">${random}</div>`;
+    }
+
+    function newDare() {
+      const random = dares[Math.floor(Math.random()*dares.length)];
+      document.getElementById('dlist').innerHTML = `<div class="card">${random}</div>`;
+    }
+
+    function generateCode() {
+      const code = "BS-" + Math.random().toString(36).substr(2,6).toUpperCase();
+      alert("Your Couple Code: " + code + "\nShare this with your partner");
+    }
+
+    function linkPartner() {
+      alert("✅ Successfully linked! Now explore together.");
+    }
+
+    function logSession() {
+      alert("Session logged beautifully. Keep the fire burning 👑");
+    }
+
+    // Start with a question
+    window.onload = () => newQuestion();
+  </script>
+</body>
+</html>

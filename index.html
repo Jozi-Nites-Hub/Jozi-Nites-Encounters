@@ -4,148 +4,244 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BlackSpice • Jozi Nites Thoughts</title>
+
+  <!-- Favicon (uses the repo logo file) -->
+  <link rel="icon" type="image/png" href="Jozi%20Nites%20Thoughts%20Logo%20(2).png">
+
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
-    
+
+    :root{
+      --bg:#0a0503;
+      --card:#1c1208;
+      --gold:#d4af37;
+      --accent:#8b4513;
+      --muted:#f4e4c9cc;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body { 
       font-family: 'Inter', sans-serif; 
       margin:0; 
-      background: #0a0503; 
-      color: #f4e4c9; 
+      background: radial-gradient(ellipse at center, rgba(60,38,31,0.6) 0%, rgba(10,5,3,1) 65% );
+      color: var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
       min-height: 100vh;
       overflow-x: hidden;
     }
+
     header { 
-      background: linear-gradient(#1c1208, #3c2a1f); 
-      padding: 25px; 
+      background: linear-gradient(180deg, rgba(28,18,8,0.98), rgba(60,42,31,0.9));
+      padding: 28px 20px; 
       text-align:center; 
-      border-bottom: 4px solid #d4af37;
+      border-bottom: 4px solid var(--gold);
       position: relative;
     }
-    .logo { width: 200px; filter: drop-shadow(0 0 15px #ffd700); animation: glow 3s infinite alternate; }
+
+    .header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap}
+
+    .logo { width:140px; height:auto; filter: drop-shadow(0 0 18px #ffd700); animation: glow 3s infinite alternate; }
     @keyframes glow { from { filter: drop-shadow(0 0 8px #ffd700); } to { filter: drop-shadow(0 0 25px #ffd700); } }
-    
-    h1 { color: #ffd700; font-family: 'Playfair Display', serif; margin: 10px 0; text-shadow: 0 0 15px #8b4513; }
-    
-    .nav { 
-      display: flex; justify-content: center; gap: 12px; padding: 18px; 
-      background: #1c1208; flex-wrap: wrap;
+
+    h1 { color: #ffd700; font-family: 'Playfair Display', serif; margin: 6px 0; font-size:2.6rem; text-shadow: 0 0 15px #8b4513; }
+    p.lead{margin:6px 0 0 0;color:#f0e7d9}
+
+    nav.nav { 
+      display:flex;gap:12px;padding:18px;background:transparent;justify-content:center;flex-wrap:wrap;max-width:1100px;margin:14px auto 0;
     }
     .nav button { 
-      padding: 12px 24px; background: #8b4513; color: #ffd700;
-      border: none; border-radius: 30px; cursor: pointer; font-weight: 600;
-      transition: all 0.4s ease;
+      padding:12px 20px;background:var(--accent);color:var(--gold);border:none;border-radius:30px;cursor:pointer;font-weight:700;min-width:120px;
+      transition:all .3s ease;
     }
-    .nav button:hover, .nav button.active { 
-      background: #d4af37; color: #1c1208; transform: scale(1.08); 
+    .nav button:hover,.nav button.active{background:var(--gold);color:var(--card);transform:translateY(-3px)}
+
+    main{max-width:1100px;margin:28px auto;padding:0 18px}
+
+    .section{display:none;animation:fadeIn .45s ease;}
+    .section.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+    .card{background:linear-gradient(180deg, rgba(28,18,8,0.9), rgba(42,31,24,0.9));padding:26px;margin:18px 0;border-radius:14px;border:1px solid var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.6)}
+
+    .levels{display:flex;gap:10px;flex-wrap:wrap}
+    .level{padding:8px 14px;border-radius:22px;font-weight:700}
+    .vanilla{background:#4a7043;color:#fff}
+    .spicy{background:#c41e3a;color:#fff}
+    .adventurous{background:#8b008b;color:#fff}
+
+    button.main{background:var(--accent);color:#fff;padding:14px 26px;border-radius:30px;border:none;font-weight:800;cursor:pointer}
+    button.main:hover{background:var(--gold);color:var(--card)}
+
+    input[type="email"],input[type="password"],input[type="date"],select{padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);width:100%;max-width:420px;background:rgba(255,255,255,0.02);color:var(--muted)}
+
+    .photo-preview img{max-width:100%;border-radius:10px;border:2px solid var(--gold)}
+
+    .voice-recorder{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px;text-align:center}
+
+    /* Footer similar to screenshot highlighted in green */
+    footer{margin-top:40px;padding:24px 18px;background:transparent}
+    .footer-inner{max-width:1100px;margin:auto;text-align:center;padding:22px 18px;border-radius:10px}
+    .footer-inner img{width:64px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.6))}
+    .copyright{font-size:1.05rem;color:#dcd3c8;margin-top:10px}
+    .sub{color:rgba(220,211,200,0.8);margin-top:6px}
+
+    /* Age gate modal */
+    .agegate{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;z-index:9999}
+    .agegate .box{background:linear-gradient(180deg,#1b120a,#24170d);padding:26px;border-radius:12px;border:2px solid var(--gold);max-width:720px;width:100%;color:var(--muted)}
+    .agegate h3{color:var(--gold);margin:0 0 8px}
+    .agegate p{margin:0 0 12px}
+    .agegate .checks{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .agegate label{display:flex;gap:10px;align-items:center}
+    .agegate input[type=checkbox]{width:18px;height:18px}
+    .agegate .actions{display:flex;gap:12px;justify-content:flex-end}
+    .agegate button{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+    .enter{background:var(--accent);color:#fff;font-weight:800}
+    .enter[disabled]{opacity:.5;cursor:not-allowed}
+
+    /* Responsive */
+    @media(min-width:900px){
+      .logo{width:180px}
+      h1{font-size:3.6rem}
+      nav.nav{justify-content:flex-start;padding-left:18px}
+      .header-inner{justify-content:flex-start}
     }
 
-    .section { padding: 35px; max-width: 1100px; margin: auto; display: none; animation: fadeIn 0.6s; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .active { display: block; }
-
-    .card { 
-      background: linear-gradient(#1c1208, #2a1f18); 
-      padding: 28px; margin: 22px 0; border-radius: 18px; 
-      border: 1px solid #d4af37; box-shadow: 0 10px 30px rgba(139,69,19,0.5);
-      transition: transform 0.3s;
+    @media(max-width:480px){
+      h1{font-size:2rem}
+      .nav button{min-width:96px;padding:10px 12px}
+      .logo{width:110px}
+      .card{padding:18px}
+      .footer-inner img{width:48px}
     }
-    .card:hover { transform: translateY(-8px); }
 
-    .level { padding: 6px 18px; border-radius: 30px; font-size: 0.9em; margin-bottom: 12px; font-weight: bold; }
-    .vanilla { background: #4a7043; }
-    .spicy { background: #c41e3a; }
-    .adventurous { background: #8b008b; }
-
-    button.main { background: #8b4513; color: white; padding: 16px 28px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
-    button.main:hover { background: #d4af37; color: #1c1208; }
-
-    .photo-preview img { max-width: 100%; border-radius: 12px; border: 2px solid #d4af37; }
-    .voice-recorder { background: #1c1208; padding: 20px; border-radius: 12px; text-align: center; }
   </style>
 </head>
 <body>
+  <!-- Age gate: user must confirm age and accept terms before using the site -->
+  <div id="ageGate" class="agegate" role="dialog" aria-modal="true" style="display:none">
+    <div class="box">
+      <h3>Welcome to BlackSpice</h3>
+      <p>This site contains adult content intended for consenting adults only. By entering you confirm you are 18 years or older and accept our terms.</p>
+
+      <div class="checks">
+        <label><input type="checkbox" id="cb-age"> I confirm I am 18 years of age or older</label>
+        <label><input type="checkbox" id="cb-terms"> I agree to the <a href="#" style="color:var(--gold)">Terms & Conditions</a></label>
+        <label><input type="checkbox" id="cb-pop"> I consent to POPIA (data processing) as described in the <a href="#" style="color:var(--gold)">Privacy / POPIA</a></label>
+        <label><input type="checkbox" id="cb-rights"> I acknowledge All Rights Reserved</label>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <small style="color:rgba(220,211,200,0.7)">We store a short flag in your browser to remember acceptance.</small>
+        <div class="actions">
+          <button onclick="closeAgeGate(false)" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Leave</button>
+          <button id="enterBtn" class="enter" disabled>Enter Site</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <header>
-    <img src="logo.png" alt="Jozi Nites Thoughts" class="logo">
-    <h1>BlackSpice</h1>
-    <p>Deep Black Love • Kinky Passion • For Kings & Queens Only 👑</p>
+    <div class="header-inner">
+      <img src="Jozi%20Nites%20Thoughts%20Logo%20(2).png" alt="Jozi Nites Thoughts" class="logo">
+      <div>
+        <h1>BlackSpice</h1>
+        <p class="lead">Deep Black Love • Kinky Passion • For Kings &amp; Queens Only 👑</p>
+      </div>
+    </div>
   </header>
 
-  <div class="nav">
-    <button onclick="showSection('home')">Home</button>
+  <nav class="nav" aria-label="Primary">
+    <button onclick="showSection('home')" class="active">Home</button>
     <button onclick="showSection('questions')">Questions</button>
     <button onclick="showSection('dares')">Kinky Dares</button>
     <button onclick="showSection('moments')">Private Moments</button>
     <button onclick="showSection('tracker')">Tracker</button>
-  </div>
+  </nav>
 
-  <!-- Home -->
-  <div id="home" class="section active">
-    <div class="card">
-      <h2>Welcome Back, Black Royalty</h2>
-      <div id="auth-section">
-        <input type="email" id="email" placeholder="Email" style="padding:12px; width:80%; margin:8px;"><br>
-        <input type="password" id="password" placeholder="Password" style="padding:12px; width:80%; margin:8px;"><br>
-        <button class="main" onclick="signUp()">Sign Up</button>
-        <button class="main" onclick="signIn()">Sign In</button>
-        <button class="main" onclick="anonymousLogin()">Quick Play (Demo)</button>
+  <main>
+    <!-- Home -->
+    <section id="home" class="section active">
+      <div class="card">
+        <h2>Welcome Back, Black Royalty</h2>
+        <div id="auth-section">
+          <input type="email" id="email" placeholder="Email"><br><br>
+          <input type="password" id="password" placeholder="Password"><br><br>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="main" onclick="signUp()">Sign Up</button>
+            <button class="main" onclick="signIn()">Sign In</button>
+            <button class="main" onclick="anonymousLogin()">Quick Play (Demo)</button>
+          </div>
+        </div>
+        <div id="user-info" style="display:none;margin-top:12px">
+          <p>Welcome, <span id="user-email"></span> 👑</p>
+          <button onclick="logout()">Logout</button>
+        </div>
       </div>
-      <div id="user-info" style="display:none;">
-        <p>Welcome, <span id="user-email"></span> 👑</p>
-        <button onclick="logout()">Logout</button>
+    </section>
+
+    <!-- Questions -->
+    <section id="questions" class="section">
+      <h2>Kinky Questions</h2>
+      <div style="margin:15px 0;" class="levels">
+        <button onclick="setLevel('all')">All</button>
+        <button onclick="setLevel('vanilla')">Vanilla</button>
+        <button onclick="setLevel('spicy')">Spicy</button>
+        <button onclick="setLevel('adventurous')">Kinky</button>
       </div>
-    </div>
-  </div>
+      <div id="qlist" class="card"></div>
+      <button class="main" onclick="newQuestion()">New Kinky Question</button>
+    </section>
 
-  <!-- Questions -->
-  <div id="questions" class="section">
-    <h2>Kinky Questions</h2>
-    <div style="margin:15px 0;">
-      <button onclick="setLevel('all')">All</button>
-      <button onclick="setLevel('vanilla')">Vanilla</button>
-      <button onclick="setLevel('spicy')">Spicy</button>
-      <button onclick="setLevel('adventurous')">Kinky</button>
-    </div>
-    <div id="qlist" class="card"></div>
-    <button class="main" onclick="newQuestion()">New Kinky Question</button>
-  </div>
+    <!-- Dares -->
+    <section id="dares" class="section">
+      <h2>Kinky Dares</h2>
+      <div id="dlist" class="card"></div>
+      <button class="main" onclick="newDare()">New Dare</button>
+    </section>
 
-  <!-- Dares -->
-  <div id="dares" class="section">
-    <h2>Kinky Dares</h2>
-    <div id="dlist" class="card"></div>
-    <button class="main" onclick="newDare()">New Dare</button>
-  </div>
+    <!-- Private Moments -->
+    <section id="moments" class="section">
+      <h2>Private Moments</h2>
+      <div class="card">
+        <p>Upload a steamy photo</p>
+        <input type="file" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)">
+        <div id="photoPreview" class="photo-preview"></div>
 
-  <!-- Private Moments -->
-  <div id="moments" class="section">
-    <h2>Private Moments</h2>
-    <div class="card">
-      <p>Upload a steamy photo</p>
-      <input type="file" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)">
-      <div id="photoPreview" class="photo-preview"></div>
-      
-      <div class="voice-recorder">
-        <p>Record a sexy voice note for your partner</p>
-        <button onclick="startRecording()">🎤 Start Recording</button>
-        <button onclick="stopRecording()">Stop</button>
-        <div id="voicePreview"></div>
+        <div class="voice-recorder" style="margin-top:12px">
+          <p>Record a sexy voice note for your partner</p>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+            <button class="main" onclick="startRecording()">🎤 Start</button>
+            <button class="main" onclick="stopRecording()">Stop</button>
+          </div>
+          <div id="voicePreview" style="margin-top:10px"></div>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Tracker -->
-  <div id="tracker" class="section">
-    <h2>Passion Tracker</h2>
-    <div class="card">
-      <input type="date" id="sessionDate"><br><br>
-      <button class="main" onclick="logSession()">Log Tonight’s Session</button>
+    <!-- Tracker -->
+    <section id="tracker" class="section">
+      <h2>Passion Tracker</h2>
+      <div class="card">
+        <input type="date" id="sessionDate"><br><br>
+        <button class="main" onclick="logSession()">Log Tonight’s Session</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner card">
+      <img src="Jozi%20Nites%20Thoughts%20Logo%20(2).png" alt="logo small">
+      <div class="copyright">© 2026 BlackSpice. Made in Johannesburg 🇿🇦</div>
+      <div class="sub">Proudly South African. Built by Jozi Nites. All rights reserved.</div>
     </div>
-  </div>
+  </footer>
 
   <script>
     // === FIREBASE CONFIG - REPLACE WITH YOUR OWN ===
@@ -157,7 +253,7 @@
     messagingSenderId: "298622809208",
     appId: "1:298622809208:web:b52f1f694f6fd60f03e98d",
     measurementId: "G-F6RSBBR9ZG"
-};
+  };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -167,7 +263,7 @@
     let mediaRecorder;
     let audioChunks = [];
 
-    // Rich Kinky Questions (Black-focused, erotic)
+    // Questions & Dares (kept adult content — ensure age gate enforcement above)
     let questions = [
       {text: "Describe how you want your Black king to dominate you tonight.", level: "adventurous"},
       {text: "What’s the sluttiest thing you’ve ever wanted your queen to do for you?", level: "spicy"},
@@ -192,109 +288,62 @@
     function showSection(sec) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.getElementById(sec).classList.add('active');
+      document.querySelectorAll('nav.nav button').forEach(b=>b.classList.remove('active'));
+      event?.target?.classList?.add('active');
     }
 
-    // Auth
-    function signUp() {
+    // Auth helpers
+    function signUp(){
       const email = document.getElementById('email').value;
       const pass = document.getElementById('password').value;
-      auth.createUserWithEmailAndPassword(email, pass).then(() => alert("Account created! Welcome to BlackSpice 👑"));
+      if(!email||!pass){alert('Please enter email and password');return}
+      auth.createUserWithEmailAndPassword(email, pass).then(()=>alert("Account created! Welcome to BlackSpice 👑")).catch(e=>alert(e.message));
     }
-
-    function signIn() {
+    function signIn(){
       const email = document.getElementById('email').value;
       const pass = document.getElementById('password').value;
-      auth.signInWithEmailAndPassword(email, pass).then(user => {
-        currentUser = user.user;
-        updateUI();
-      });
+      auth.signInWithEmailAndPassword(email, pass).then(user=>{currentUser=user.user;updateUI()}).catch(e=>alert(e.message));
     }
-
-    function anonymousLogin() {
-      auth.signInAnonymously().then(user => {
-        currentUser = user.user;
-        updateUI();
-      });
-    }
-
-    function logout() {
-      auth.signOut();
-      document.getElementById('user-info').style.display = 'none';
-      document.getElementById('auth-section').style.display = 'block';
-    }
-
-    function updateUI() {
-      if (currentUser) {
-        document.getElementById('auth-section').style.display = 'none';
-        document.getElementById('user-info').style.display = 'block';
-        document.getElementById('user-email').textContent = currentUser.email || "Black King/Queen";
-      }
-    }
+    function anonymousLogin(){auth.signInAnonymously().then(user=>{currentUser=user.user;updateUI()}).catch(e=>console.warn(e))}
+    function logout(){auth.signOut();document.getElementById('user-info').style.display='none';document.getElementById('auth-section').style.display='block'}
+    function updateUI(){if(currentUser){document.getElementById('auth-section').style.display='none';document.getElementById('user-info').style.display='block';document.getElementById('user-email').textContent=currentUser.email||"Black King/Queen"}}
 
     // Questions & Dares
-    function setLevel(lvl) { currentLevel = lvl; newQuestion(); }
-    function newQuestion() {
-      let filtered = currentLevel === 'all' ? questions : questions.filter(q => q.level === currentLevel);
-      const q = filtered[Math.floor(Math.random() * filtered.length)] || questions[0];
-      document.getElementById('qlist').innerHTML = `
-        <div class="level ${q.level}">${q.level.toUpperCase()}</div>
-        <p style="font-size:1.3em; line-height:1.6;">${q.text}</p>
-      `;
-    }
+    function setLevel(lvl){currentLevel=lvl;newQuestion()}
+    function newQuestion(){let filtered=currentLevel==='all'?questions:questions.filter(q=>q.level===currentLevel);const q=filtered[Math.floor(Math.random()*filtered.length)]||questions[0];document.getElementById('qlist').innerHTML=`<div class="level ${q.level}">${q.level.toUpperCase()}</div><p style="font-size:1.3em;line-height:1.6">${q.text}</p>`}
+    function newDare(){const dare=dares[Math.floor(Math.random()*dares.length)];document.getElementById('dlist').innerHTML=`<p style="font-size:1.25em">${dare}</p>`}
 
-    function newDare() {
-      const dare = dares[Math.floor(Math.random() * dares.length)];
-      document.getElementById('dlist').innerHTML = `<p style="font-size:1.25em;">${dare}</p>`;
-    }
-
-    // Photo
-    function handlePhotoUpload(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = ev => {
-          document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}">`;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+    // Photo upload
+    function handlePhotoUpload(e){const file=e.target.files[0];if(file){const reader=new FileReader();reader.onload=ev=>{document.getElementById('photoPreview').innerHTML=`<img src="${ev.target.result}">`};reader.readAsDataURL(file)}}
 
     // Voice Notes
-    function startRecording() {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          document.getElementById('voicePreview').innerHTML = `
-            <audio controls src="${audioUrl}"></audio><br>
-            <small>Sexy voice note ready for your partner 🔥</small>
-          `;
-        };
-        mediaRecorder.start();
-      });
+    function startRecording(){navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{mediaRecorder=new MediaRecorder(stream);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{const audioBlob=new Blob(audioChunks,{type:'audio/mp3'});const audioUrl=URL.createObjectURL(audioBlob);document.getElementById('voicePreview').innerHTML=`<audio controls src="${audioUrl}"></audio><br><small>Sexy voice note ready for your partner 🔥</small>`};mediaRecorder.start()}).catch(e=>alert('Microphone access denied'))}
+    function stopRecording(){if(mediaRecorder)mediaRecorder.stop()}
+
+    function logSession(){const date=document.getElementById('sessionDate').value||"tonight";alert(`Session logged for ${date} — Keep that Black passion burning hot! 👑🔥`)}
+
+    auth.onAuthStateChanged(user=>{currentUser=user;if(user)updateUI()})
+
+    // Age gate logic
+    const AGE_KEY = 'blackspice_age_accepted_v1';
+    function checkAgeGate(){
+      try{const accepted=localStorage.getItem(AGE_KEY);if(accepted==='true')return false; }catch(e){}
+      return true;
     }
 
-    function stopRecording() {
-      if (mediaRecorder) mediaRecorder.stop();
+    function openAgeGate(){document.getElementById('ageGate').style.display='flex';document.body.style.overflow='hidden';}
+    function closeAgeGate(accepted){document.getElementById('ageGate').style.display='none';document.body.style.overflow='auto';if(accepted){try{localStorage.setItem(AGE_KEY,'true')}catch(e){}}else{window.location.href='about:blank'}}
+
+    function wireAgeGate(){const cbAge=document.getElementById('cb-age');const cbTerms=document.getElementById('cb-terms');const cbPop=document.getElementById('cb-pop');const cbRights=document.getElementById('cb-rights');const enter=document.getElementById('enterBtn');function update(){enter.disabled = !(cbAge.checked && cbTerms.checked && cbPop.checked && cbRights.checked)}cbAge.addEventListener('change',update);cbTerms.addEventListener('change',update);cbPop.addEventListener('change',update);cbRights.addEventListener('change',update);enter.addEventListener('click',()=>closeAgeGate(true));}
+
+    window.onload = ()=>{
+      // wire age gate
+      wireAgeGate();
+      if(checkAgeGate())openAgeGate();
+
+      newQuestion();newDare();
     }
 
-    function logSession() {
-      const date = document.getElementById('sessionDate').value || "tonight";
-      alert(`Session logged for ${date} — Keep that Black passion burning hot! 👑🔥`);
-    }
-
-    auth.onAuthStateChanged(user => {
-      currentUser = user;
-      if (user) updateUI();
-    });
-
-    window.onload = () => {
-      newQuestion();
-      newDare();
-    };
   </script>
 </body>
 </html>

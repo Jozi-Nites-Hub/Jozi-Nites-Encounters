@@ -10,7 +10,7 @@ Part of **Jozi Nites** — Safe · Educated · Unashamed.
 **JohnBlackPipes** (John Black Pipes) — Founder  
 - Johannesburg, Gauteng  
 - Black 40 · Open Minded & Experienced  
-- Profile: [ddirt.com/JohnBlackPipes](https://ddirt.com/JohnBlackPipes)  
+- Profile: [fetlife.com/JohnBlackPipes](https://fetlife.com/JohnBlackPipes)  
 - X: [@JohnBlackPipes1](https://x.com/JohnBlackPipes1)
 
 ## Stack

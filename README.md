@@ -1,37 +1,41 @@
 # Jozi Nites Encounters
 
-**18+ night wire for adults in Mzansi.**  
-Part of [Jozi Nites](https://github.com/Jozi-Nites-Hub) — Safe. Educated. Unashamed.
+**Tagline:** *Where Mzansi nights find each other*
 
-## What it is
+18+ consent-first connection for adults across Johannesburg and Mzansi.  
+Part of **Jozi Nites** — Safe · Educated · Unashamed.
 
-Jozi Nites Encounters is a local-first demo for meeting people, following circles, and planning 18+ nights. Data stays on the device until real accounts are added.
+## Featured member
 
-### Core flows
-- Age gate + house rules
-- Profile setup (nickname, province, interests)
-- **Pulse** — community feed
-- **People** — like → mutual match → message
-- **Circles** — interest rooms
-- **Nights** — event plans (interested flag, not tickets)
-- **Wire** — demo chat with clear labels
-- Report / Block / Delete my data
+**JohnBlackPipes** (John Black Pipes) — Founder  
+- Johannesburg, Gauteng  
+- Black 40 · Open Minded & Experienced  
+- Profile: [ddirt.com/JohnBlackPipes](https://ddirt.com/JohnBlackPipes)  
+- X: [@JohnBlackPipes1](https://x.com/JohnBlackPipes1)
 
-### Product rules (P0)
-1. Honest demo labels (sample people, automatic replies, device-only storage)
-2. No fake “Liked you” before a real match
-3. Message only after mutual like
-4. Coarse location only (city + province)
-5. Consent and safety tips stay visible
+## Stack
 
-## Status
+Static site — HTML, CSS, vanilla JS.  
+Runs on GitHub Pages / Vercel / any static host. No build step required.
 
-Repo initialized under **Jozi Nites Encounters**. App source to land here as the zero-budget localStorage demo evolves.
+## Local
 
-## Related
+Open `index.html` in a browser, or:
 
-- Org: [Jozi-Nites-Hub](https://github.com/Jozi-Nites-Hub)
-- Contact: jozinites011@gmail.com
+```bash
+npx serve .
+```
+
+## Deploy
+
+Point Vercel / Netlify / GitHub Pages at this repo root.  
+Age gate is client-side; enforce 18+ policy in product and moderation when accounts go live.
+
+## Brand
+
+- Logo: `assets/logo.svg`
+- Colours: ink `#0c0a0f`, accent `#e23d7e`, gold `#f4b73f`, teal `#1f9d8d`
+- Type: Fraunces + Outfit
 
 ---
 

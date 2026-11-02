@@ -28,7 +28,7 @@
     links: {
       ddirt: "https://ddirt.com/JohnBlackPipes",
       x: "https://x.com/JohnBlackPipes1",
-      site: "https://www.jozinites.co.za"
+      site: "https://jozi-nites-hub.github.io/Website/"
     },
     stats: { nights: 12, circles: 6, followers: 1760 }
   };
@@ -297,7 +297,7 @@
       "<p>" +
       FOUNDER.bio +
       "</p>" +
-      '<p class="meta" style="margin-top:0.75rem">Age band on DDirt: 35–39 · Public headline: Black 40 · Open Minded &amp; Experienced</p>' +
+      '<p class="meta" style="margin-top:0.75rem">Age band on DDirt: 35–39 · Public headline: Black 40 · Open Minded & Experienced</p>' +
       "</div>" +
       '<div class="card">' +
       "<h3>Interests</h3>" +
@@ -550,10 +550,10 @@
 
   function escapeHtml(s) {
     return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """);
   }
 
   function escapeAttr(s) {
